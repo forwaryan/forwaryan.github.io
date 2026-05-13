@@ -1,0 +1,78 @@
+scheme: Pisces
+
+darkmode: false
+creative_commons:
+  license: by-nc-sa
+  sidebar: false
+  post: false
+
+menu:
+  home: / || fa fa-home
+  archives: /archives/ || fa fa-archive
+  categories: /categories/ || fa fa-th
+  tags: /tags/ || fa fa-tags
+  about: /about/ || fa fa-user
+
+favicon:
+  small: /images/favicon-16x16-next.png
+  medium: /images/favicon-32x32-next.png
+  apple_touch_icon: /images/apple-touch-icon-next.png
+  safari_pinned_tab: /images/logo.svg
+
+avatar:
+  url: /images/avatar.gif
+  rounded: false
+  rotated: false
+
+social:
+  GitHub: https://github.com/forwaryan || fab fa-github
+  CNblogs: https://www.cnblogs.com/waryan/ || fas fa-bahai
+
+toc:
+  enable: true
+  number: true
+  wrap: false
+  expand_all: false
+  max_depth: 6
+
+back2top:
+  enable: true
+  sidebar: false
+  scrollpercent: false
+
+copycode:
+  enable: true
+  show_result: false
+  style:
+
+bookmark:
+  enable: false
+
+motion:
+  enable: true
+  async: false
+
+local_search:
+  enable: true
+  trigger: auto
+  top_n_per_article: 1
+  unescape: true
+  preload: false
+
+pjax: false
+mediumzoom: false
+lazyload: false
+pangu: false
+
+footer:
+  since: 2020
+  icon:
+    name: fa fa-heart
+    animated: false
+    color: '#808080'
+  copyright: true
+  powered: true
+  beian:
+    enable: false
+  live_time:
+    enable: false
