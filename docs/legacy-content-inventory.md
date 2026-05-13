@@ -69,6 +69,6 @@ This file was generated during the Hexo 8 migration to track data recovered from
 
 ## Missing Legacy Assets
 
-These assets were referenced by the old generated HTML but are not present in the existing repository:
+These assets were referenced by the old generated HTML but are not present in the existing repository. The generated source now replaces the broken reference with an inline note:
 
 - `/images/jsjwlbybf.png`

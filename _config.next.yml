@@ -40,10 +40,10 @@ back2top:
   sidebar: false
   scrollpercent: false
 
-copycode:
-  enable: true
-  show_result: false
-  style:
+codeblock:
+  copy_button:
+    enable: true
+    style:
 
 bookmark:
   enable: false
@@ -54,7 +54,6 @@ motion:
 
 local_search:
   enable: true
-  trigger: auto
   top_n_per_article: 1
   unescape: true
   preload: false

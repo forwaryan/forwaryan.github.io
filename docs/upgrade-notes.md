@@ -36,11 +36,20 @@
   - `/categories/`
   - `/tags/`
   - all 6 legacy post URLs
-- Scanned generated HTML internal references: the only missing internal asset is the pre-existing `/images/jsjwlbybf.png`.
+- Scanned generated HTML internal references; the pre-existing missing `/images/jsjwlbybf.png` reference has since been replaced with an inline note.
+
+## Follow-up Optimizations
+
+- Switched canonical site URL from `http://forwaryan.github.io` to `https://forwaryan.github.io`.
+- Added sitemap generation and `robots.txt`.
+- Updated NexT 8 code copy button configuration to `codeblock.copy_button`.
+- Renamed the category and tag index pages to `分类` and `标签`.
+- Added pull request build coverage to the GitHub Pages workflow.
+- Replaced the historical broken `/images/jsjwlbybf.png` image reference with an inline note.
 
 ## Known Legacy Gap
 
-`/images/jsjwlbybf.png` was referenced by old generated article HTML but does not exist in the current repository. It was already missing before this migration, so the upgrade did not remove it.
+`/images/jsjwlbybf.png` was referenced by old generated article HTML but does not exist in the current repository. It was already missing before this migration. The broken image reference has been replaced with an inline note so generated pages do not emit an internal 404.
 
 ## Next Operational Step
 
