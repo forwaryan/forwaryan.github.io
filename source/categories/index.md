@@ -1,5 +1,5 @@
 ---
-title: categories
+title: 分类
 date: 2026-05-13 14:55:00
 type: categories
 comments: false

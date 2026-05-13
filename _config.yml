@@ -8,7 +8,7 @@ language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
-url: http://forwaryan.github.io
+url: https://forwaryan.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -83,6 +83,10 @@ feed:
   content_limit: 140
   content_limit_delim: ' '
   order_by: -date
+
+# Sitemap
+sitemap:
+  path: sitemap.xml
 
 # Local search data for NexT
 search:
