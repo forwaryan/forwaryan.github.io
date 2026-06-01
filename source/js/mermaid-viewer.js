@@ -39,6 +39,14 @@
     return button;
   };
 
+  const getViewportPadding = viewport => {
+    const style = getComputedStyle(viewport);
+    return {
+      x: (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0),
+      y: (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0)
+    };
+  };
+
   const openLightbox = sourceSvg => {
     const old = document.querySelector('.mermaid-lightbox');
     if (old) old.remove();
@@ -68,6 +76,9 @@
     const stage = document.createElement('div');
     stage.className = 'mermaid-lightbox__stage';
 
+    const content = document.createElement('div');
+    content.className = 'mermaid-lightbox__content';
+
     const surface = document.createElement('div');
     surface.className = 'mermaid-lightbox__surface';
 
@@ -80,44 +91,77 @@
     clone.style.height = `${sourceSize.height}px`;
     clone.style.maxWidth = 'none';
     surface.appendChild(clone);
-    stage.appendChild(surface);
+    content.appendChild(surface);
+    stage.appendChild(content);
     viewport.appendChild(stage);
     overlay.append(toolbar, viewport);
     document.body.appendChild(overlay);
     document.body.classList.add('mermaid-lightbox-open');
 
     let scale = 1;
-    const setScale = nextScale => {
+
+    const getScrollRange = (stageWidth = stage.offsetWidth, stageHeight = stage.offsetHeight) => {
+      const padding = getViewportPadding(viewport);
+      return {
+        x: Math.max(0, stageWidth + padding.x - viewport.clientWidth),
+        y: Math.max(0, stageHeight + padding.y - viewport.clientHeight)
+      };
+    };
+
+    const syncLayout = ({ center = false } = {}) => {
+      const before = getScrollRange();
+      const scrollRatioX = before.x ? viewport.scrollLeft / before.x : .5;
+      const scrollRatioY = before.y ? viewport.scrollTop / before.y : .5;
+      const padding = getViewportPadding(viewport);
+      const viewportWidth = Math.max(0, viewport.clientWidth - padding.x);
+      const viewportHeight = Math.max(0, viewport.clientHeight - padding.y);
+      const contentWidth = Math.ceil(surface.offsetWidth * scale);
+      const contentHeight = Math.ceil(surface.offsetHeight * scale);
+
+      content.style.width = `${contentWidth}px`;
+      content.style.height = `${contentHeight}px`;
+      stage.style.width = `${Math.max(viewportWidth, contentWidth)}px`;
+      stage.style.height = `${Math.max(viewportHeight, contentHeight)}px`;
+
+      requestAnimationFrame(() => {
+        const after = getScrollRange();
+        viewport.scrollLeft = center ? after.x / 2 : after.x * scrollRatioX;
+        viewport.scrollTop = center ? after.y / 2 : after.y * scrollRatioY;
+      });
+    };
+
+    const setScale = (nextScale, options = {}) => {
       scale = Math.min(4, Math.max(.5, nextScale));
       surface.style.transform = `scale(${scale})`;
       scaleText.textContent = `${Math.round(scale * 100)}%`;
-      requestAnimationFrame(() => {
-        stage.style.width = `${Math.ceil(surface.offsetWidth * scale)}px`;
-        stage.style.height = `${Math.ceil(surface.offsetHeight * scale)}px`;
-      });
+      syncLayout(options);
     };
 
     const closeLightbox = () => {
       overlay.remove();
       document.body.classList.remove('mermaid-lightbox-open');
       document.removeEventListener('keydown', handleKeydown);
+      window.removeEventListener('resize', handleResize);
     };
+
+    const handleResize = () => syncLayout();
 
     const handleKeydown = event => {
       if (event.key === 'Escape') closeLightbox();
       if (event.key === '+' || event.key === '=') setScale(scale * 1.2);
       if (event.key === '-') setScale(scale / 1.2);
-      if (event.key === '0') setScale(1);
+      if (event.key === '0') setScale(1, { center: true });
     };
 
     zoomOut.addEventListener('click', () => setScale(scale / 1.2));
     zoomIn.addEventListener('click', () => setScale(scale * 1.2));
-    reset.addEventListener('click', () => setScale(1));
+    reset.addEventListener('click', () => setScale(1, { center: true }));
     close.addEventListener('click', closeLightbox);
     overlay.addEventListener('click', event => {
       if (event.target === overlay) closeLightbox();
     });
     document.addEventListener('keydown', handleKeydown);
+    window.addEventListener('resize', handleResize);
 
     let dragging = false;
     let startX = 0;
@@ -155,11 +199,7 @@
     }, { passive: false });
 
     const initialScale = Math.min(1.6, Math.max(.75, (window.innerWidth - 96) / sourceSize.width));
-    setScale(initialScale);
-    requestAnimationFrame(() => {
-      viewport.scrollLeft = Math.max(0, (stage.offsetWidth - viewport.clientWidth) / 2);
-      viewport.scrollTop = Math.max(0, (stage.offsetHeight - viewport.clientHeight) / 2);
-    });
+    setScale(initialScale, { center: true });
   };
 
   const enhanceMermaid = svg => {
