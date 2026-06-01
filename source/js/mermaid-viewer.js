@@ -111,8 +111,8 @@
       const viewportHeight = Math.max(0, viewport.clientHeight - padding.y);
       const contentWidth = Math.ceil(surface.offsetWidth * currentScale);
       const contentHeight = Math.ceil(surface.offsetHeight * currentScale);
-      const stageWidth = Math.max(viewportWidth, contentWidth);
-      const stageHeight = Math.max(viewportHeight, contentHeight);
+      const stageWidth = contentWidth + viewportWidth;
+      const stageHeight = contentHeight + viewportHeight;
 
       return {
         padding,
