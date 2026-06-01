@@ -41,11 +41,15 @@
 
   const getViewportPadding = viewport => {
     const style = getComputedStyle(viewport);
-    return {
-      x: (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0),
-      y: (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0)
-    };
+    const left = parseFloat(style.paddingLeft) || 0;
+    const right = parseFloat(style.paddingRight) || 0;
+    const top = parseFloat(style.paddingTop) || 0;
+    const bottom = parseFloat(style.paddingBottom) || 0;
+
+    return { left, right, top, bottom, x: left + right, y: top + bottom };
   };
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
   const openLightbox = sourceSvg => {
     const old = document.querySelector('.mermaid-lightbox');
@@ -72,6 +76,7 @@
 
     const viewport = document.createElement('div');
     viewport.className = 'mermaid-lightbox__viewport';
+    viewport.tabIndex = 0;
 
     const stage = document.createElement('div');
     stage.className = 'mermaid-lightbox__stage';
@@ -100,6 +105,28 @@
 
     let scale = 1;
 
+    const getLayoutMetrics = (currentScale = scale) => {
+      const padding = getViewportPadding(viewport);
+      const viewportWidth = Math.max(0, viewport.clientWidth - padding.x);
+      const viewportHeight = Math.max(0, viewport.clientHeight - padding.y);
+      const contentWidth = Math.ceil(surface.offsetWidth * currentScale);
+      const contentHeight = Math.ceil(surface.offsetHeight * currentScale);
+      const stageWidth = Math.max(viewportWidth, contentWidth);
+      const stageHeight = Math.max(viewportHeight, contentHeight);
+
+      return {
+        padding,
+        viewportWidth,
+        viewportHeight,
+        contentWidth,
+        contentHeight,
+        stageWidth,
+        stageHeight,
+        contentLeft: Math.max(0, (stageWidth - contentWidth) / 2),
+        contentTop: Math.max(0, (stageHeight - contentHeight) / 2)
+      };
+    };
+
     const getScrollRange = (stageWidth = stage.offsetWidth, stageHeight = stage.offsetHeight) => {
       const padding = getViewportPadding(viewport);
       return {
@@ -108,33 +135,75 @@
       };
     };
 
-    const syncLayout = ({ center = false } = {}) => {
+    const getAnchorState = anchor => {
+      if (!anchor) return null;
+
+      const rect = viewport.getBoundingClientRect();
+      const metrics = getLayoutMetrics();
+      const viewportX = anchor.x - rect.left;
+      const viewportY = anchor.y - rect.top;
+
+      return {
+        viewportX,
+        viewportY,
+        contentX: clamp(
+          (viewport.scrollLeft + viewportX - metrics.padding.left - metrics.contentLeft) / scale,
+          0,
+          surface.offsetWidth
+        ),
+        contentY: clamp(
+          (viewport.scrollTop + viewportY - metrics.padding.top - metrics.contentTop) / scale,
+          0,
+          surface.offsetHeight
+        )
+      };
+    };
+
+    const syncLayout = ({ center = false, anchorState = null } = {}) => {
       const before = getScrollRange();
       const scrollRatioX = before.x ? viewport.scrollLeft / before.x : .5;
       const scrollRatioY = before.y ? viewport.scrollTop / before.y : .5;
-      const padding = getViewportPadding(viewport);
-      const viewportWidth = Math.max(0, viewport.clientWidth - padding.x);
-      const viewportHeight = Math.max(0, viewport.clientHeight - padding.y);
-      const contentWidth = Math.ceil(surface.offsetWidth * scale);
-      const contentHeight = Math.ceil(surface.offsetHeight * scale);
+      const metrics = getLayoutMetrics();
 
-      content.style.width = `${contentWidth}px`;
-      content.style.height = `${contentHeight}px`;
-      stage.style.width = `${Math.max(viewportWidth, contentWidth)}px`;
-      stage.style.height = `${Math.max(viewportHeight, contentHeight)}px`;
+      content.style.width = `${metrics.contentWidth}px`;
+      content.style.height = `${metrics.contentHeight}px`;
+      stage.style.width = `${metrics.stageWidth}px`;
+      stage.style.height = `${metrics.stageHeight}px`;
 
       requestAnimationFrame(() => {
-        const after = getScrollRange();
+        const nextMetrics = getLayoutMetrics();
+        const after = getScrollRange(nextMetrics.stageWidth, nextMetrics.stageHeight);
+
+        if (anchorState) {
+          viewport.scrollLeft = clamp(
+            nextMetrics.padding.left + nextMetrics.contentLeft + anchorState.contentX * scale - anchorState.viewportX,
+            0,
+            after.x
+          );
+          viewport.scrollTop = clamp(
+            nextMetrics.padding.top + nextMetrics.contentTop + anchorState.contentY * scale - anchorState.viewportY,
+            0,
+            after.y
+          );
+          return;
+        }
+
         viewport.scrollLeft = center ? after.x / 2 : after.x * scrollRatioX;
         viewport.scrollTop = center ? after.y / 2 : after.y * scrollRatioY;
       });
     };
 
     const setScale = (nextScale, options = {}) => {
+      const anchorState = getAnchorState(options.anchor);
       scale = Math.min(4, Math.max(.5, nextScale));
       surface.style.transform = `scale(${scale})`;
       scaleText.textContent = `${Math.round(scale * 100)}%`;
-      syncLayout(options);
+      syncLayout({ ...options, anchorState });
+    };
+
+    const panBy = (deltaX, deltaY) => {
+      viewport.scrollLeft += deltaX;
+      viewport.scrollTop += deltaY;
     };
 
     const closeLightbox = () => {
@@ -151,6 +220,25 @@
       if (event.key === '+' || event.key === '=') setScale(scale * 1.2);
       if (event.key === '-') setScale(scale / 1.2);
       if (event.key === '0') setScale(1, { center: true });
+
+      const panStep = event.shiftKey ? 180 : 90;
+      const key = event.key.toLowerCase();
+      if (event.key === 'ArrowUp' || key === 'w') {
+        event.preventDefault();
+        panBy(0, -panStep);
+      }
+      if (event.key === 'ArrowDown' || key === 's') {
+        event.preventDefault();
+        panBy(0, panStep);
+      }
+      if (event.key === 'ArrowLeft' || key === 'a') {
+        event.preventDefault();
+        panBy(-panStep, 0);
+      }
+      if (event.key === 'ArrowRight' || key === 'd') {
+        event.preventDefault();
+        panBy(panStep, 0);
+      }
     };
 
     zoomOut.addEventListener('click', () => setScale(scale / 1.2));
@@ -186,20 +274,32 @@
       viewport.scrollTop = startTop - (event.clientY - startY);
     });
 
-    viewport.addEventListener('pointerup', event => {
+    const stopDragging = event => {
       dragging = false;
       viewport.classList.remove('is-dragging');
-      viewport.releasePointerCapture(event.pointerId);
-    });
+      if (viewport.hasPointerCapture(event.pointerId)) {
+        viewport.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    viewport.addEventListener('pointerup', stopDragging);
+    viewport.addEventListener('pointercancel', stopDragging);
 
     viewport.addEventListener('wheel', event => {
-      if (!event.ctrlKey && !event.metaKey) return;
       event.preventDefault();
-      setScale(scale * (event.deltaY > 0 ? .9 : 1.1));
+
+      if (event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+        panBy(event.deltaX || event.deltaY, event.deltaX ? event.deltaY : 0);
+        return;
+      }
+
+      const zoomFactor = Math.exp(-event.deltaY * .001);
+      setScale(scale * zoomFactor, { anchor: { x: event.clientX, y: event.clientY } });
     }, { passive: false });
 
     const initialScale = Math.min(1.6, Math.max(.75, (window.innerWidth - 96) / sourceSize.width));
     setScale(initialScale, { center: true });
+    viewport.focus({ preventScroll: true });
   };
 
   const enhanceMermaid = svg => {
