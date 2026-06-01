@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab3：Multi-RaftKV"
 date: "2026-06-02 10:03:00"
-updated: "2026-06-02 10:00:00"
+updated: "2026-06-02 11:30:00"
 permalink: "2026/06/02/tinykv-lab3-multiraftkv/"
 categories:
   - "分布式系统"
@@ -13,8 +13,15 @@ tags:
   - "Region"
 ---
 
-> 本文整理自本地 TinyKV 项目文件：`tinykv-understanding/labs/lab3-multiraftkv.md`。
-> 系列顺序：[TinyKV Lab 路线图](/2026/06/02/tinykv-lab-roadmap/) -> [TinyKV Lab1：StandaloneKV](/2026/06/02/tinykv-lab1-standalonekv/) -> [TinyKV Lab2：RaftKV](/2026/06/02/tinykv-lab2-raftkv/) -> [TinyKV Lab3：Multi-RaftKV](/2026/06/02/tinykv-lab3-multiraftkv/) -> [TinyKV Lab3B：Region Split 后的状态收敛问题](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) -> [TinyKV Lab4：Transactions](/2026/06/02/tinykv-lab4-transactions/) -> [TinyKV 测试指南](/2026/06/02/tinykv-testing-guide/)。
+> 来源：本地 TinyKV 项目文件：`tinykv-understanding/labs/lab3-multiraftkv.md`。
+> 顺序：[路线图](/2026/06/02/tinykv-lab-roadmap/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [测试](/2026/06/02/tinykv-testing-guide/)。
+
+<figure class="tinykv-svg-figure">
+  <a href="/images/posts/tinykv-labs/tinykv-lab3-region-peer-store.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab3-region-peer-store.svg" alt="TinyKV Lab3 Store Peer Region 关系"></a>
+  <figcaption>Store、Peer、Region 和 Scheduler 的关系。</figcaption>
+</figure>
+
+Lab3 开始才真正像一个分布式存储系统。单个 Raft group 只能让数据更可靠，不能让容量和吞吐横向扩展；Region 和 Multi-Raft 解决的是“把不同 key range 分给不同 Raft group”这件事。
 
 官方页面：https://yunpengn.github.io/tinykv/doc/project3-MultiRaftKV.html
 

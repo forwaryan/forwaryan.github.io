@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab2：RaftKV"
 date: "2026-06-02 10:04:00"
-updated: "2026-06-02 10:00:00"
+updated: "2026-06-02 11:30:00"
 permalink: "2026/06/02/tinykv-lab2-raftkv/"
 categories:
   - "分布式系统"
@@ -12,8 +12,15 @@ tags:
   - "RaftKV"
 ---
 
-> 本文整理自本地 TinyKV 项目文件：`tinykv-understanding/labs/lab2-raftkv.md`。
-> 系列顺序：[TinyKV Lab 路线图](/2026/06/02/tinykv-lab-roadmap/) -> [TinyKV Lab1：StandaloneKV](/2026/06/02/tinykv-lab1-standalonekv/) -> [TinyKV Lab2：RaftKV](/2026/06/02/tinykv-lab2-raftkv/) -> [TinyKV Lab3：Multi-RaftKV](/2026/06/02/tinykv-lab3-multiraftkv/) -> [TinyKV Lab3B：Region Split 后的状态收敛问题](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) -> [TinyKV Lab4：Transactions](/2026/06/02/tinykv-lab4-transactions/) -> [TinyKV 测试指南](/2026/06/02/tinykv-testing-guide/)。
+> 来源：本地 TinyKV 项目文件：`tinykv-understanding/labs/lab2-raftkv.md`。
+> 顺序：[路线图](/2026/06/02/tinykv-lab-roadmap/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [测试](/2026/06/02/tinykv-testing-guide/)。
+
+<figure class="tinykv-svg-figure">
+  <a href="/images/posts/tinykv-labs/tinykv-lab2-raftkv-flow.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab2-raftkv-flow.svg" alt="TinyKV Lab2 RaftKV 写入流程"></a>
+  <figcaption>写请求先进入 Raft 日志，commit 之后再 apply 到 BadgerDB。</figcaption>
+</figure>
+
+Lab2 的重点不是“多套一层 Raft”这么简单。真正要想明白的是：共识算法只负责排出一个确定顺序，上层还要把日志持久化、发消息、apply 和 callback 串起来。顺序错了，崩溃恢复时就会露馅。
 
 官方页面：https://yunpengn.github.io/tinykv/doc/project2-RaftKV.html
 

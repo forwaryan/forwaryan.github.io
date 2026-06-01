@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab 路线图"
 date: "2026-06-02 10:06:00"
-updated: "2026-06-02 10:00:00"
+updated: "2026-06-02 11:30:00"
 permalink: "2026/06/02/tinykv-lab-roadmap/"
 categories:
   - "分布式系统"
@@ -12,8 +12,15 @@ tags:
   - "学习路线"
 ---
 
-> 本文整理自本地 TinyKV 项目文件：`tinykv-understanding/labs/tinykv-lab-roadmap.md`。
-> 系列顺序：[TinyKV Lab 路线图](/2026/06/02/tinykv-lab-roadmap/) -> [TinyKV Lab1：StandaloneKV](/2026/06/02/tinykv-lab1-standalonekv/) -> [TinyKV Lab2：RaftKV](/2026/06/02/tinykv-lab2-raftkv/) -> [TinyKV Lab3：Multi-RaftKV](/2026/06/02/tinykv-lab3-multiraftkv/) -> [TinyKV Lab3B：Region Split 后的状态收敛问题](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) -> [TinyKV Lab4：Transactions](/2026/06/02/tinykv-lab4-transactions/) -> [TinyKV 测试指南](/2026/06/02/tinykv-testing-guide/)。
+> 来源：本地 TinyKV 项目文件：`tinykv-understanding/labs/tinykv-lab-roadmap.md`。
+> 顺序：[路线图](/2026/06/02/tinykv-lab-roadmap/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [测试](/2026/06/02/tinykv-testing-guide/)。
+
+<figure class="tinykv-svg-figure">
+  <a href="/images/posts/tinykv-labs/tinykv-lab-roadmap.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab-roadmap.svg" alt="TinyKV Lab 路线图"></a>
+  <figcaption>从单机 KV 到事务层的路线图。</figcaption>
+</figure>
+
+我会先从这张路线图看 TinyKV。它不是一上来就写一个“分布式数据库”，而是每个 Lab 只加一类能力：先能落盘，再能复制，再能把 key 空间拆开，最后才谈事务。这样读起来不乱，也更像一个真实系统逐步长出来的过程。
 
 资料来源：
 

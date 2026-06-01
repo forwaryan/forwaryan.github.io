@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-label="Lab4：MVCC 三个 CF 和 Percolator 两阶段提交">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.10"/></filter>
+  </defs>
+  <style>
+    .page{fill:#f8fafc}.panel{fill:#ffffff;stroke:#d8e0ec;stroke-width:1.4}.title{font:700 24px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#0f172a}.label{font:600 15px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#111827}.small{font:400 13px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#334155}.box{fill:#f8fafc;stroke:#94a3b8;stroke-width:1.4}.blue{fill:#eff6ff;stroke:#60a5fa;stroke-width:1.6}.green{fill:#ecfdf5;stroke:#34d399;stroke-width:1.5}.amber{fill:#fffbeb;stroke:#f59e0b;stroke-width:1.5}.red{fill:#fef2f2;stroke:#f87171;stroke-width:1.4}.arrow{fill:none;stroke:#475569;stroke-width:1.7;marker-end:url(#arrow)}.dashed{stroke-dasharray:6 5}.muted{fill:#64748b}.caption{font:600 14px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#475569}
+  </style>
+  <rect class="page" width="1120" height="520" rx="0"/>
+  <rect class="panel" x="24" y="24" width="1072" height="472" rx="14" filter="url(#shadow)"/>
+  <text class="title" x="560" y="60" text-anchor="middle">Lab4：MVCC 三个 CF 和 Percolator 两阶段提交</text>
+  
+    <rect class="blue" x="80" y="125" width="170" height="88" rx="8"/><text class="label" x="165" y="163" text-anchor="middle"><tspan x="165" dy="0">Prewrite</tspan><tspan x="165" dy="22">检查冲突</tspan></text>
+    <rect class="amber" x="335" y="95" width="170" height="82" rx="8"/><text class="label" x="420" y="130" text-anchor="middle"><tspan x="420" dy="0">lock CF</tspan><tspan x="420" dy="22">写事务锁</tspan></text>
+    <rect class="green" x="335" y="215" width="170" height="82" rx="8"/><text class="label" x="420" y="250" text-anchor="middle"><tspan x="420" dy="0">default CF</tspan><tspan x="420" dy="22">写临时 value</tspan></text>
+    <rect class="blue" x="610" y="155" width="170" height="88" rx="8"/><text class="label" x="695" y="193" text-anchor="middle"><tspan x="695" dy="0">Commit</tspan><tspan x="695" dy="22">提交事务</tspan></text>
+    <rect class="red" x="855" y="95" width="170" height="82" rx="8"/><text class="label" x="940" y="130" text-anchor="middle"><tspan x="940" dy="0">write CF</tspan><tspan x="940" dy="22">commit_ts 记录</tspan></text>
+    <rect class="box" x="855" y="215" width="170" height="82" rx="8"/><text class="label" x="940" y="250" text-anchor="middle"><tspan x="940" dy="0">lock CF</tspan><tspan x="940" dy="22">删除锁</tspan></text>
+    <path class="arrow" d="M 250 169 L 335 136"/><text class="small" x="292.5" y="140.5" text-anchor="middle"><tspan x="292.5" dy="0">lock</tspan></text><path class="arrow" d="M 250 169 L 335 256"/><text class="small" x="292.5" y="200.5" text-anchor="middle"><tspan x="292.5" dy="0">value</tspan></text><path class="arrow" d="M 505 136 L 610 184"/><path class="arrow" d="M 505 256 L 610 184"/><path class="arrow" d="M 780 184 L 855 136"/><text class="small" x="817.5" y="148" text-anchor="middle"><tspan x="817.5" dy="0">可见</tspan></text><path class="arrow" d="M 780 184 L 855 256"/><text class="small" x="817.5" y="208" text-anchor="middle"><tspan x="817.5" dy="0">清理</tspan></text>
+    <rect class="box" x="210" y="370" width="230" height="58" rx="6"/><text class="small" x="325" y="394" text-anchor="middle"><tspan x="325" dy="0">读路径</tspan><tspan x="325" dy="18">start_ts 先查 lock，再查 write</tspan></text>
+    <rect class="green" x="470" y="370" width="210" height="58" rx="6"/><text class="small" x="575" y="394" text-anchor="middle"><tspan x="575" dy="0">可见版本</tspan><tspan x="575" dy="18">commit_ts &lt;= start_ts</tspan></text>
+    <rect class="amber" x="710" y="370" width="210" height="58" rx="6"/><text class="small" x="815" y="394" text-anchor="middle"><tspan x="815" dy="0">取值</tspan><tspan x="815" dy="18">write.start_ts -&gt; default</tspan></text>
+    <path class="arrow" d="M 440 399 L 470 399"/><path class="arrow" d="M 680 399 L 710 399"/>
+    <text class="caption" x="560" y="475" text-anchor="middle">Raw KV 只关心“当前值”；事务层必须同时管理版本、锁和提交记录。</text>
+  
+</svg>

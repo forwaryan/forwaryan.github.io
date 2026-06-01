@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab1：StandaloneKV"
 date: "2026-06-02 10:05:00"
-updated: "2026-06-02 10:00:00"
+updated: "2026-06-02 11:30:00"
 permalink: "2026/06/02/tinykv-lab1-standalonekv/"
 categories:
   - "分布式系统"
@@ -12,8 +12,15 @@ tags:
   - "BadgerDB"
 ---
 
-> 本文整理自本地 TinyKV 项目文件：`tinykv-understanding/labs/lab1-standalonekv.md`。
-> 系列顺序：[TinyKV Lab 路线图](/2026/06/02/tinykv-lab-roadmap/) -> [TinyKV Lab1：StandaloneKV](/2026/06/02/tinykv-lab1-standalonekv/) -> [TinyKV Lab2：RaftKV](/2026/06/02/tinykv-lab2-raftkv/) -> [TinyKV Lab3：Multi-RaftKV](/2026/06/02/tinykv-lab3-multiraftkv/) -> [TinyKV Lab3B：Region Split 后的状态收敛问题](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) -> [TinyKV Lab4：Transactions](/2026/06/02/tinykv-lab4-transactions/) -> [TinyKV 测试指南](/2026/06/02/tinykv-testing-guide/)。
+> 来源：本地 TinyKV 项目文件：`tinykv-understanding/labs/lab1-standalonekv.md`。
+> 顺序：[路线图](/2026/06/02/tinykv-lab-roadmap/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [测试](/2026/06/02/tinykv-testing-guide/)。
+
+<figure class="tinykv-svg-figure">
+  <a href="/images/posts/tinykv-labs/tinykv-lab1-storage-path.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab1-storage-path.svg" alt="TinyKV Lab1 请求路径"></a>
+  <figcaption>Lab1 把 Raw KV 请求直接映射到底层 BadgerDB。</figcaption>
+</figure>
+
+Lab1 看起来轻，但它决定了后面几层怎么和本地存储说话。先把 Raw API、Storage.Reader/Write 和 CF 这几个点讲清楚，后面的 Raft apply 和 MVCC 才有地方落。
 
 官方页面：https://yunpengn.github.io/tinykv/doc/project1-StandaloneKV.html
 

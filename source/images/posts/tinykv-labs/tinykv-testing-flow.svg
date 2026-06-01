@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" role="img" aria-label="TinyKV 测试：不要只看 make 的退出码">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.10"/></filter>
+  </defs>
+  <style>
+    .page{fill:#f8fafc}.panel{fill:#ffffff;stroke:#d8e0ec;stroke-width:1.4}.title{font:700 24px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#0f172a}.label{font:600 15px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#111827}.small{font:400 13px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#334155}.box{fill:#f8fafc;stroke:#94a3b8;stroke-width:1.4}.blue{fill:#eff6ff;stroke:#60a5fa;stroke-width:1.6}.green{fill:#ecfdf5;stroke:#34d399;stroke-width:1.5}.amber{fill:#fffbeb;stroke:#f59e0b;stroke-width:1.5}.red{fill:#fef2f2;stroke:#f87171;stroke-width:1.4}.arrow{fill:none;stroke:#475569;stroke-width:1.7;marker-end:url(#arrow)}.dashed{stroke-dasharray:6 5}.muted{fill:#64748b}.caption{font:600 14px -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;fill:#475569}
+  </style>
+  <rect class="page" width="1000" height="420" rx="0"/>
+  <rect class="panel" x="24" y="24" width="952" height="372" rx="14" filter="url(#shadow)"/>
+  <text class="title" x="500" y="60" text-anchor="middle">TinyKV 测试：不要只看 make 的退出码</text>
+  
+    <rect class="blue" x="70" y="140" width="160" height="82" rx="8"/><text class="label" x="150" y="175" text-anchor="middle"><tspan x="150" dy="0">make projectX</tspan><tspan x="150" dy="22">运行阶段测试</tspan></text>
+    <rect class="box" x="290" y="140" width="160" height="82" rx="8"/><text class="label" x="370" y="175" text-anchor="middle"><tspan x="370" dy="0">测试输出</tspan><tspan x="370" dy="22">PASS / FAIL / panic</tspan></text>
+    <rect class="amber" x="510" y="140" width="180" height="82" rx="8"/><text class="label" x="600" y="175" text-anchor="middle"><tspan x="600" dy="0">二次检查日志</tspan><tspan x="600" dy="22">grep 失败关键字</tspan></text>
+    <rect class="green" x="750" y="140" width="170" height="82" rx="8"/><text class="label" x="835" y="175" text-anchor="middle"><tspan x="835" dy="0">结论</tspan><tspan x="835" dy="22">能否说已通过</tspan></text>
+    <path class="arrow" d="M 230 181 L 290 181"/><path class="arrow" d="M 450 181 L 510 181"/><path class="arrow" d="M 690 181 L 750 181"/>
+    <rect class="box" x="140" y="285" width="120" height="48" rx="6"/><text class="small" x="200" y="313" text-anchor="middle"><tspan x="200" dy="0">project1</tspan></text><rect class="box" x="300" y="285" width="120" height="48" rx="6"/><text class="small" x="360" y="313" text-anchor="middle"><tspan x="360" dy="0">project2</tspan></text><rect class="box" x="460" y="285" width="120" height="48" rx="6"/><text class="small" x="520" y="313" text-anchor="middle"><tspan x="520" dy="0">project3</tspan></text><rect class="box" x="620" y="285" width="120" height="48" rx="6"/><text class="small" x="680" y="313" text-anchor="middle"><tspan x="680" dy="0">project4</tspan></text>
+    <text class="caption" x="500" y="370" text-anchor="middle">Lab2B、Lab2C、Lab3B 有些子命令会吞退出码，日志检查比一句“make 跑完了”更可靠。</text>
+  
+</svg>

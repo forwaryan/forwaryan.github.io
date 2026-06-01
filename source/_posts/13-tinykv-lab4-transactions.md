@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab4：Transactions"
 date: "2026-06-02 10:01:00"
-updated: "2026-06-02 10:00:00"
+updated: "2026-06-02 11:30:00"
 permalink: "2026/06/02/tinykv-lab4-transactions/"
 categories:
   - "分布式系统"
@@ -13,8 +13,15 @@ tags:
   - "Percolator"
 ---
 
-> 本文整理自本地 TinyKV 项目文件：`tinykv-understanding/labs/lab4-transactions.md`。
-> 系列顺序：[TinyKV Lab 路线图](/2026/06/02/tinykv-lab-roadmap/) -> [TinyKV Lab1：StandaloneKV](/2026/06/02/tinykv-lab1-standalonekv/) -> [TinyKV Lab2：RaftKV](/2026/06/02/tinykv-lab2-raftkv/) -> [TinyKV Lab3：Multi-RaftKV](/2026/06/02/tinykv-lab3-multiraftkv/) -> [TinyKV Lab3B：Region Split 后的状态收敛问题](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) -> [TinyKV Lab4：Transactions](/2026/06/02/tinykv-lab4-transactions/) -> [TinyKV 测试指南](/2026/06/02/tinykv-testing-guide/)。
+> 来源：本地 TinyKV 项目文件：`tinykv-understanding/labs/lab4-transactions.md`。
+> 顺序：[路线图](/2026/06/02/tinykv-lab-roadmap/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [测试](/2026/06/02/tinykv-testing-guide/)。
+
+<figure class="tinykv-svg-figure">
+  <a href="/images/posts/tinykv-labs/tinykv-lab4-mvcc-percolator.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab4-mvcc-percolator.svg" alt="TinyKV Lab4 MVCC 与 Percolator"></a>
+  <figcaption>事务层用 default/write/lock 三个 CF 管理版本、锁和提交记录。</figcaption>
+</figure>
+
+Lab4 的问题换了一类：前面几层关心数据怎么复制、怎么分片，这里关心并发事务怎么读到稳定快照、怎么发现写冲突，以及崩溃后怎么把遗留锁处理干净。
 
 官方页面：https://github.com/talent-plan/tinykv/blob/course/doc/project4-Transaction.md
 
