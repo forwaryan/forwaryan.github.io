@@ -1,0 +1,156 @@
+.post-body .code-container:has(.mermaid),
+.post-body .mermaid-enhanced-container {
+  position: relative;
+  box-sizing: border-box;
+  width: calc(100vw - 48px);
+  max-width: calc(100vw - 48px);
+  margin: 1.5rem 0 1.5rem 50%;
+  padding: 14px 48px 14px 14px;
+  transform: translateX(-50%);
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #d8dee9;
+  border-radius: 8px;
+  background: #fff;
+}
+
+@media (min-width: 1168px) {
+  .post-body .code-container:has(.mermaid),
+  .post-body .mermaid-enhanced-container {
+    width: 1120px;
+    max-width: 1120px;
+  }
+}
+
+.post-body .code-container:has(.mermaid) .copy-btn,
+.post-body .mermaid-enhanced-container .copy-btn {
+  display: none;
+}
+
+.post-body .code-container:has(.mermaid) .mermaid,
+.post-body .mermaid-enhanced-container .mermaid {
+  min-width: max-content;
+  text-align: left;
+}
+
+.post-body .mermaid svg {
+  display: block;
+  height: auto !important;
+  max-width: none !important;
+  margin: 0 auto;
+  cursor: zoom-in;
+}
+
+.mermaid-zoom-button {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border: 1px solid #b8c2d1;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .94);
+  color: #334155;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.mermaid-zoom-button:hover,
+.mermaid-zoom-button:focus {
+  border-color: #64748b;
+  color: #0f172a;
+}
+
+.mermaid-lightbox-open {
+  overflow: hidden;
+}
+
+.mermaid-lightbox {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 23, 42, .94);
+}
+
+.mermaid-lightbox__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 8px 14px;
+  color: #e5e7eb;
+}
+
+.mermaid-lightbox__title {
+  margin-right: auto;
+  font-size: 14px;
+}
+
+.mermaid-lightbox__button {
+  min-width: 36px;
+  padding: 6px 10px;
+  border: 1px solid rgba(226, 232, 240, .34);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .08);
+  color: #f8fafc;
+  font-size: 13px;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.mermaid-lightbox__button:hover,
+.mermaid-lightbox__button:focus {
+  background: rgba(255, 255, 255, .16);
+}
+
+.mermaid-lightbox__scale {
+  min-width: 48px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.mermaid-lightbox__viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+  cursor: grab;
+}
+
+.mermaid-lightbox__viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.mermaid-lightbox__stage {
+  position: relative;
+}
+
+.mermaid-lightbox__surface {
+  display: inline-block;
+  padding: 18px;
+  border-radius: 8px;
+  background: #fff;
+  transform-origin: top left;
+}
+
+.mermaid-lightbox__surface svg {
+  display: block;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+}
+
+@media (max-width: 767px) {
+  .post-body .code-container:has(.mermaid),
+  .post-body .mermaid-enhanced-container {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    padding: 12px 44px 12px 12px;
+  }
+
+  .mermaid-lightbox__viewport {
+    padding: 14px;
+  }
+}

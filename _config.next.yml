@@ -1,5 +1,9 @@
 scheme: Pisces
 
+custom_file_path:
+  style: source/_data/styles.styl
+  bodyEnd: source/_data/body-end.njk
+
 darkmode: false
 creative_commons:
   license: by-nc-sa
@@ -68,7 +72,7 @@ local_search:
   preload: false
 
 pjax: false
-mediumzoom: false
+mediumzoom: true
 lazyload: false
 pangu: false
 
