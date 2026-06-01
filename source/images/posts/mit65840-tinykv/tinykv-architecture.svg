@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="720" viewBox="0 0 1120 720" role="img" aria-labelledby="title desc">
+  <title id="title">TinyKV raftstore architecture</title>
+  <desc id="desc">Architecture diagram showing TinyKV request flow, raftstore, PeerStorage, BadgerDB, Region, Peer, Store, and Scheduler.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <style>
+      .bg { fill: #f7fbf8; }
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 12; }
+      .green { fill: #eaf8ef; stroke: #6bbf87; }
+      .blue { fill: #e9f3ff; stroke: #76a7e8; }
+      .amber { fill: #fff7e6; stroke: #e5b75d; }
+      .purple { fill: #f3efff; stroke: #a78bfa; }
+      .red { fill: #fff0f0; stroke: #e08989; }
+      .title { font: 700 28px Arial, "Microsoft YaHei", sans-serif; fill: #172033; }
+      .head { font: 700 18px Arial, "Microsoft YaHei", sans-serif; fill: #172033; }
+      .label { font: 15px Arial, "Microsoft YaHei", sans-serif; fill: #253247; }
+      .small { font: 13px Arial, "Microsoft YaHei", sans-serif; fill: #526070; }
+      .arrow { stroke: #334155; stroke-width: 2.3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #64748b; stroke-width: 2; stroke-dasharray: 6 5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="720"/>
+  <text x="560" y="48" text-anchor="middle" class="title">TinyKV：Raft 不只是算法，而是嵌进 raftstore 的存储链路</text>
+
+  <rect x="60" y="88" width="1000" height="260" rx="16" class="box"/>
+  <text x="560" y="124" text-anchor="middle" class="head">一次写请求的大致路径</text>
+
+  <rect x="95" y="170" width="120" height="58" rx="10" class="blue"/>
+  <text x="155" y="195" text-anchor="middle" class="label">Client</text>
+  <text x="155" y="214" text-anchor="middle" class="small">RawPut / Delete</text>
+
+  <rect x="260" y="170" width="130" height="58" rx="10" class="green"/>
+  <text x="325" y="195" text-anchor="middle" class="label">RaftStorage</text>
+  <text x="325" y="214" text-anchor="middle" class="small">包装 RaftCmd</text>
+
+  <rect x="435" y="170" width="130" height="58" rx="10" class="amber"/>
+  <text x="500" y="195" text-anchor="middle" class="label">Peer</text>
+  <text x="500" y="214" text-anchor="middle" class="small">propose log</text>
+
+  <rect x="610" y="170" width="130" height="58" rx="10" class="amber"/>
+  <text x="675" y="195" text-anchor="middle" class="label">Raft Ready</text>
+  <text x="675" y="214" text-anchor="middle" class="small">entries / msgs</text>
+
+  <rect x="785" y="170" width="130" height="58" rx="10" class="green"/>
+  <text x="850" y="195" text-anchor="middle" class="label">PeerStorage</text>
+  <text x="850" y="214" text-anchor="middle" class="small">先持久化</text>
+
+  <rect x="950" y="170" width="85" height="58" rx="10" class="purple"/>
+  <text x="992" y="195" text-anchor="middle" class="label">Badger</text>
+  <text x="992" y="214" text-anchor="middle" class="small">kvdb/raftdb</text>
+
+  <path d="M215 199 L260 199" class="arrow"/>
+  <path d="M390 199 L435 199" class="arrow"/>
+  <path d="M565 199 L610 199" class="arrow"/>
+  <path d="M740 199 L785 199" class="arrow"/>
+  <path d="M915 199 L950 199" class="arrow"/>
+
+  <rect x="400" y="270" width="340" height="44" rx="10" class="red"/>
+  <text x="570" y="298" text-anchor="middle" class="label">顺序关键：Ready -> 持久化 -> 发送消息 -> apply -> Advance</text>
+
+  <rect x="60" y="395" width="1000" height="245" rx="16" class="box"/>
+  <text x="560" y="430" text-anchor="middle" class="head">Multi-Raft 视角：Store、Region、Peer、Scheduler</text>
+
+  <rect x="100" y="480" width="215" height="95" rx="12" class="green"/>
+  <text x="207" y="510" text-anchor="middle" class="label">Store 1</text>
+  <text x="207" y="535" text-anchor="middle" class="small">R1 Peer + R2 Peer</text>
+  <text x="207" y="555" text-anchor="middle" class="small">本地 Badger engines</text>
+
+  <rect x="452" y="480" width="215" height="95" rx="12" class="green"/>
+  <text x="559" y="510" text-anchor="middle" class="label">Store 2</text>
+  <text x="559" y="535" text-anchor="middle" class="small">R1 Peer + R3 Peer</text>
+  <text x="559" y="555" text-anchor="middle" class="small">多个 Raft group 共存</text>
+
+  <rect x="805" y="480" width="215" height="95" rx="12" class="green"/>
+  <text x="912" y="510" text-anchor="middle" class="label">Store 3</text>
+  <text x="912" y="535" text-anchor="middle" class="small">R2 Peer + R3 Peer</text>
+  <text x="912" y="555" text-anchor="middle" class="small">承载不同 key range</text>
+
+  <path d="M205 480 C310 420, 450 420, 555 480" class="dash"/>
+  <text x="380" y="447" text-anchor="middle" class="small">Region 1 的多个 Peer 组成一个 Raft group</text>
+  <path d="M315 545 C430 625, 690 625, 805 545" class="dash"/>
+  <text x="560" y="626" text-anchor="middle" class="small">Region split 后，不同 key range 可以并行复制和服务</text>
+
+  <rect x="430" y="650" width="260" height="42" rx="10" class="blue"/>
+  <text x="560" y="677" text-anchor="middle" class="label">Scheduler：收集 heartbeat，生成 balance operator</text>
+  <path d="M560 650 L560 575" class="dash"/>
+</svg>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="620" viewBox="0 0 1120 620" role="img" aria-labelledby="title desc">
+  <title id="title">MIT 6.5840 and TinyKV comparison overview</title>
+  <desc id="desc">A side-by-side architecture comparison showing MIT 6.5840 as distributed systems correctness training and TinyKV as distributed database storage-layer training.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#41516a"/>
+    </marker>
+    <style>
+      .bg { fill: #f7f9fc; }
+      .panel { fill: #ffffff; stroke: #cfd8e3; stroke-width: 2; rx: 14; }
+      .mit { fill: #e9f2ff; stroke: #76a7e8; }
+      .tiny { fill: #edf8f2; stroke: #72bf93; }
+      .shared { fill: #fff7e6; stroke: #e2ad45; }
+      .title { font: 700 28px Arial, "Microsoft YaHei", sans-serif; fill: #172033; }
+      .subtitle { font: 15px Arial, "Microsoft YaHei", sans-serif; fill: #526070; }
+      .head { font: 700 21px Arial, "Microsoft YaHei", sans-serif; fill: #172033; }
+      .label { font: 16px Arial, "Microsoft YaHei", sans-serif; fill: #263447; }
+      .small { font: 13px Arial, "Microsoft YaHei", sans-serif; fill: #59677a; }
+      .arrow { stroke: #41516a; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="620"/>
+  <text x="560" y="48" text-anchor="middle" class="title">MIT 6.5840 vs TinyKV：同样有 Raft，但训练目标不同</text>
+  <text x="560" y="76" text-anchor="middle" class="subtitle">MIT 更关注分布式系统正确性；TinyKV 更关注数据库存储层工程结构</text>
+
+  <rect x="55" y="110" width="470" height="420" rx="18" class="panel"/>
+  <rect x="595" y="110" width="470" height="420" rx="18" class="panel"/>
+
+  <text x="290" y="150" text-anchor="middle" class="head">MIT 6.5840</text>
+  <text x="830" y="150" text-anchor="middle" class="head">TinyKV</text>
+  <text x="290" y="176" text-anchor="middle" class="subtitle">分布式系统正确性训练</text>
+  <text x="830" y="176" text-anchor="middle" class="subtitle">分布式数据库存储层训练</text>
+
+  <rect x="120" y="215" width="340" height="46" rx="10" class="mit"/>
+  <text x="290" y="244" text-anchor="middle" class="label">MapReduce：任务分发 / 失败重试</text>
+  <path d="M290 263 L290 292" class="arrow"/>
+
+  <rect x="120" y="295" width="340" height="46" rx="10" class="mit"/>
+  <text x="290" y="324" text-anchor="middle" class="label">KVSrv：RPC / 去重 / 幂等</text>
+  <path d="M290 343 L290 372" class="arrow"/>
+
+  <rect x="120" y="375" width="340" height="46" rx="10" class="shared"/>
+  <text x="290" y="404" text-anchor="middle" class="label">Raft：选举 / 日志 / Snapshot</text>
+  <path d="M290 423 L290 452" class="arrow"/>
+
+  <rect x="120" y="455" width="340" height="46" rx="10" class="mit"/>
+  <text x="290" y="484" text-anchor="middle" class="label">ShardKV：配置一致性 / 分片迁移</text>
+
+  <rect x="660" y="215" width="340" height="46" rx="10" class="tiny"/>
+  <text x="830" y="244" text-anchor="middle" class="label">StandaloneKV：Badger / CF / Raw API</text>
+  <path d="M830 263 L830 292" class="arrow"/>
+
+  <rect x="660" y="295" width="340" height="46" rx="10" class="shared"/>
+  <text x="830" y="324" text-anchor="middle" class="label">RaftKV：Ready / raftstore / apply</text>
+  <path d="M830 343 L830 372" class="arrow"/>
+
+  <rect x="660" y="375" width="340" height="46" rx="10" class="tiny"/>
+  <text x="830" y="404" text-anchor="middle" class="label">Multi-Raft：Region / Peer / Scheduler</text>
+  <path d="M830 423 L830 452" class="arrow"/>
+
+  <rect x="660" y="455" width="340" height="46" rx="10" class="tiny"/>
+  <text x="830" y="484" text-anchor="middle" class="label">Transactions：MVCC / Percolator / 2PC</text>
+
+  <rect x="255" y="548" width="610" height="42" rx="12" fill="#172033"/>
+  <text x="560" y="575" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="700" fill="#ffffff">
+    6.5840 打底分布式正确性，TinyKV 把这套能力放进数据库存储层
+  </text>
+</svg>

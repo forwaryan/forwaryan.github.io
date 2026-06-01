@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="640" viewBox="0 0 1120 640" role="img" aria-labelledby="title desc">
+  <title id="title">TinyKV MVCC and Percolator transaction flow</title>
+  <desc id="desc">A transaction diagram showing prewrite, lock/default/write column families, commit, rollback, and resolve lock.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 12; }
+      .green { fill: #eaf8ef; stroke: #6bbf87; }
+      .blue { fill: #e9f3ff; stroke: #76a7e8; }
+      .amber { fill: #fff7e6; stroke: #e5b75d; }
+      .red { fill: #fff0f0; stroke: #e08989; }
+      .purple { fill: #f3efff; stroke: #a78bfa; }
+      .title { font: 700 28px Arial, "Microsoft YaHei", sans-serif; fill: #172033; }
+      .head { font: 700 18px Arial, "Microsoft YaHei", sans-serif; fill: #172033; }
+      .label { font: 15px Arial, "Microsoft YaHei", sans-serif; fill: #253247; }
+      .small { font: 13px Arial, "Microsoft YaHei", sans-serif; fill: #526070; }
+      .arrow { stroke: #334155; stroke-width: 2.3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #64748b; stroke-width: 2; stroke-dasharray: 6 5; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1120" height="640"/>
+  <text x="560" y="48" text-anchor="middle" class="title">TinyKV Lab4：MVCC + Percolator 把 KV 变成事务存储</text>
+
+  <rect x="70" y="92" width="980" height="205" rx="16" class="box"/>
+  <text x="560" y="128" text-anchor="middle" class="head">一次正常写事务：Prewrite 再 Commit</text>
+
+  <rect x="110" y="170" width="140" height="60" rx="10" class="blue"/>
+  <text x="180" y="196" text-anchor="middle" class="label">Client</text>
+  <text x="180" y="216" text-anchor="middle" class="small">start_ts</text>
+
+  <rect x="310" y="170" width="150" height="60" rx="10" class="amber"/>
+  <text x="385" y="196" text-anchor="middle" class="label">KvPrewrite</text>
+  <text x="385" y="216" text-anchor="middle" class="small">检查锁和写冲突</text>
+
+  <rect x="520" y="120" width="165" height="48" rx="10" class="red"/>
+  <text x="602" y="150" text-anchor="middle" class="label">lock CF：事务锁</text>
+  <rect x="520" y="205" width="165" height="48" rx="10" class="green"/>
+  <text x="602" y="235" text-anchor="middle" class="label">default CF：临时 value</text>
+
+  <rect x="755" y="170" width="135" height="60" rx="10" class="amber"/>
+  <text x="822" y="196" text-anchor="middle" class="label">KvCommit</text>
+  <text x="822" y="216" text-anchor="middle" class="small">commit_ts</text>
+
+  <rect x="930" y="170" width="95" height="60" rx="10" class="purple"/>
+  <text x="977" y="196" text-anchor="middle" class="label">write CF</text>
+  <text x="977" y="216" text-anchor="middle" class="small">正式可见</text>
+
+  <path d="M250 200 L310 200" class="arrow"/>
+  <path d="M460 190 C490 160, 500 145, 520 145" class="arrow"/>
+  <path d="M460 210 C492 228, 500 229, 520 229" class="arrow"/>
+  <path d="M685 145 C720 150, 742 168, 755 185" class="dash"/>
+  <path d="M685 229 C720 226, 742 215, 755 207" class="dash"/>
+  <path d="M890 200 L930 200" class="arrow"/>
+
+  <rect x="70" y="355" width="980" height="210" rx="16" class="box"/>
+  <text x="560" y="391" text-anchor="middle" class="head">异常路径：锁遗留时，通过 primary 状态决定提交还是回滚</text>
+
+  <rect x="135" y="445" width="170" height="62" rx="10" class="red"/>
+  <text x="220" y="471" text-anchor="middle" class="label">遇到 lock conflict</text>
+  <text x="220" y="491" text-anchor="middle" class="small">读写请求被阻塞</text>
+
+  <rect x="385" y="445" width="170" height="62" rx="10" class="amber"/>
+  <text x="470" y="471" text-anchor="middle" class="label">CheckTxnStatus</text>
+  <text x="470" y="491" text-anchor="middle" class="small">看 primary lock</text>
+
+  <rect x="635" y="420" width="160" height="52" rx="10" class="green"/>
+  <text x="715" y="452" text-anchor="middle" class="label">已提交：ResolveLock</text>
+
+  <rect x="635" y="500" width="160" height="52" rx="10" class="red"/>
+  <text x="715" y="532" text-anchor="middle" class="label">超时：BatchRollback</text>
+
+  <rect x="875" y="445" width="130" height="62" rx="10" class="purple"/>
+  <text x="940" y="471" text-anchor="middle" class="label">状态收敛</text>
+  <text x="940" y="491" text-anchor="middle" class="small">清锁 / 写回滚</text>
+
+  <path d="M305 476 L385 476" class="arrow"/>
+  <path d="M555 466 C590 442, 610 438, 635 446" class="arrow"/>
+  <path d="M555 486 C590 512, 610 523, 635 526" class="arrow"/>
+  <path d="M795 446 C830 450, 850 462, 875 472" class="arrow"/>
+  <path d="M795 526 C830 515, 852 500, 875 486" class="arrow"/>
+
+  <text x="560" y="604" text-anchor="middle" class="small">关键区别：Raw KV 只有当前值；事务 KV 通过 start_ts / commit_ts 选择快照可见版本</text>
+</svg>
