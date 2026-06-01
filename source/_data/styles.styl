@@ -130,23 +130,46 @@
   padding-left: 10px;
 }
 
-.post-toc .nav .active > .nav-child {
-  height: auto !important;
-  overflow: visible;
-}
-
 .post-toc .nav-item {
   margin: 4px 0;
-  line-height: 1.45;
-  overflow: visible;
-  text-overflow: clip;
-  white-space: normal;
+  line-height: 1.65;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .post-toc .nav-item a {
-  display: inline;
-  word-break: break-word;
+  display: inline-block;
+  max-width: 100%;
+  box-sizing: border-box;
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toc-title-tooltip {
+  position: fixed;
+  z-index: 110;
+  max-width: 420px;
+  padding: 7px 10px;
+  border: 1px solid #d8dee9;
+  border-radius: 4px;
+  background: #fff;
+  color: #3b4252;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
+  font-size: 13px;
+  line-height: 1.5;
+  pointer-events: none;
+  white-space: normal;
   overflow-wrap: anywhere;
+  opacity: 0;
+  transform: translate3d(0, -50%, 0);
+  transition: opacity 0.12s ease;
+}
+
+.toc-title-tooltip.is-visible {
+  opacity: 1;
 }
 
 .mermaid-zoom-button {
