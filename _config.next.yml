@@ -45,6 +45,15 @@ codeblock:
     enable: true
     style:
 
+mermaid:
+  enable: true
+  theme:
+    light: default
+    dark: dark
+
+vendors:
+  plugins: local
+
 bookmark:
   enable: false
 
