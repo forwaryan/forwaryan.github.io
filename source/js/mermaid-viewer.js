@@ -2,15 +2,27 @@
   const processed = new WeakSet();
   let observerTimer;
 
-  const getViewBoxWidth = svg => {
+  const getSvgSize = svg => {
     const viewBox = svg.getAttribute('viewBox');
-    if (!viewBox) return 0;
-    const parts = viewBox.trim().split(/\s+/).map(Number);
-    return Number.isFinite(parts[2]) ? parts[2] : 0;
+    const rect = svg.getBoundingClientRect();
+    if (viewBox) {
+      const parts = viewBox.trim().split(/\s+/).map(Number);
+      if (Number.isFinite(parts[2]) && Number.isFinite(parts[3])) {
+        return {
+          width: Math.ceil(parts[2]),
+          height: Math.ceil(parts[3])
+        };
+      }
+    }
+
+    return {
+      width: Math.ceil(rect.width || 1000),
+      height: Math.ceil(rect.height || 600)
+    };
   };
 
   const setSvgReadableWidth = svg => {
-    const naturalWidth = Math.ceil(getViewBoxWidth(svg) || svg.getBoundingClientRect().width || 0);
+    const naturalWidth = getSvgSize(svg).width;
 
     if (naturalWidth) {
       svg.style.width = `${naturalWidth}px`;
@@ -59,10 +71,14 @@
     const surface = document.createElement('div');
     surface.className = 'mermaid-lightbox__surface';
 
+    const sourceSize = getSvgSize(sourceSvg);
     const clone = sourceSvg.cloneNode(true);
-    clone.style.width = `${Math.ceil(getViewBoxWidth(sourceSvg) || sourceSvg.getBoundingClientRect().width || 1000)}px`;
+    clone.removeAttribute('style');
+    clone.setAttribute('width', sourceSize.width);
+    clone.setAttribute('height', sourceSize.height);
+    clone.style.width = `${sourceSize.width}px`;
+    clone.style.height = `${sourceSize.height}px`;
     clone.style.maxWidth = 'none';
-    clone.style.height = 'auto';
     surface.appendChild(clone);
     stage.appendChild(surface);
     viewport.appendChild(stage);
@@ -76,8 +92,8 @@
       surface.style.transform = `scale(${scale})`;
       scaleText.textContent = `${Math.round(scale * 100)}%`;
       requestAnimationFrame(() => {
-        stage.style.width = `${surface.offsetWidth * scale}px`;
-        stage.style.height = `${surface.offsetHeight * scale}px`;
+        stage.style.width = `${Math.ceil(surface.offsetWidth * scale)}px`;
+        stage.style.height = `${Math.ceil(surface.offsetHeight * scale)}px`;
       });
     };
 
@@ -138,9 +154,12 @@
       setScale(scale * (event.deltaY > 0 ? .9 : 1.1));
     }, { passive: false });
 
-    const naturalWidth = Math.ceil(getViewBoxWidth(sourceSvg) || sourceSvg.getBoundingClientRect().width || 1000);
-    const initialScale = Math.min(1.6, Math.max(.75, (window.innerWidth - 96) / naturalWidth));
+    const initialScale = Math.min(1.6, Math.max(.75, (window.innerWidth - 96) / sourceSize.width));
     setScale(initialScale);
+    requestAnimationFrame(() => {
+      viewport.scrollLeft = Math.max(0, (stage.offsetWidth - viewport.clientWidth) / 2);
+      viewport.scrollTop = Math.max(0, (stage.offsetHeight - viewport.clientHeight) / 2);
+    });
   };
 
   const enhanceMermaid = svg => {
