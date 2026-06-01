@@ -52,7 +52,7 @@ codeblock:
 mermaid:
   enable: true
   theme:
-    light: default
+    light: neutral
     dark: dark
 
 vendors:
@@ -62,7 +62,7 @@ bookmark:
   enable: false
 
 motion:
-  enable: true
+  enable: false
   async: false
 
 local_search:

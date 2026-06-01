@@ -1,6 +1,4 @@
 (() => {
-  const MIN_INLINE_WIDTH = 760;
-  const MAX_INLINE_WIDTH = 1280;
   const processed = new WeakSet();
   let observerTimer;
 
@@ -11,12 +9,13 @@
     return Number.isFinite(parts[2]) ? parts[2] : 0;
   };
 
-  const setSvgReadableWidth = (svg, container) => {
-    const naturalWidth = Math.ceil(getViewBoxWidth(svg) || svg.getBoundingClientRect().width || MIN_INLINE_WIDTH);
-    const targetWidth = Math.min(MAX_INLINE_WIDTH, Math.max(MIN_INLINE_WIDTH, naturalWidth));
+  const setSvgReadableWidth = svg => {
+    const naturalWidth = Math.ceil(getViewBoxWidth(svg) || svg.getBoundingClientRect().width || 0);
 
-    svg.style.width = `${targetWidth}px`;
-    svg.style.maxWidth = 'none';
+    if (naturalWidth) {
+      svg.style.width = `${naturalWidth}px`;
+    }
+    svg.style.maxWidth = '100%';
     svg.style.height = 'auto';
   };
 
@@ -40,7 +39,7 @@
 
     const title = document.createElement('div');
     title.className = 'mermaid-lightbox__title';
-    title.textContent = 'Mermaid 图';
+    title.textContent = 'Mermaid 图表';
 
     const zoomOut = createButton('-');
     const zoomIn = createButton('+');
@@ -139,7 +138,9 @@
       setScale(scale * (event.deltaY > 0 ? .9 : 1.1));
     }, { passive: false });
 
-    setScale(1);
+    const naturalWidth = Math.ceil(getViewBoxWidth(sourceSvg) || sourceSvg.getBoundingClientRect().width || 1000);
+    const initialScale = Math.min(1.6, Math.max(.75, (window.innerWidth - 96) / naturalWidth));
+    setScale(initialScale);
   };
 
   const enhanceMermaid = svg => {
@@ -152,10 +153,10 @@
     processed.add(svg);
     container.classList.add('mermaid-enhanced-container');
     mermaid.classList.add('mermaid-enhanced');
-    setSvgReadableWidth(svg, container);
+    setSvgReadableWidth(svg);
 
     if (!container.querySelector('.mermaid-zoom-button')) {
-      const button = createButton('放大', 'mermaid-zoom-button');
+      const button = createButton('查看大图', 'mermaid-zoom-button');
       button.setAttribute('aria-label', '放大 Mermaid 图');
       button.addEventListener('click', () => openLightbox(svg));
       container.appendChild(button);
