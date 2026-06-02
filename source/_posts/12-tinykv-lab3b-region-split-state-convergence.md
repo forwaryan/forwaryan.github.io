@@ -1,5 +1,5 @@
 ---
-title: "TinyKV Lab3B：Region Split 后的状态收敛问题"
+title: "TinyKV Lab3B Bug 排查：Region Split 后的状态收敛问题"
 date: "2026-06-02 10:02:00"
 updated: "2026-06-02 11:30:00"
 permalink: "2026/06/02/tinykv-lab3b-region-split-state-convergence/"
