@@ -1,7 +1,7 @@
 ---
 title: "TinyKV / TiKV / MIT 6.824 面经索引"
 date: "2026-06-02 09:58:00"
-updated: "2026-06-02 11:30:00"
+updated: "2026-06-02 12:30:00"
 permalink: "2026/06/02/tinykv-interview-experience-index/"
 categories:
   - "分布式系统"
@@ -10,9 +10,11 @@ tags:
   - "TiKV"
   - "MIT 6.824"
   - "面试"
+  - "Raft"
+  - "事务"
 ---
 
-> 来源：本地 `interview-experiences/tinykv-tikv-6.824-mianshi.md`，更新口径是 2026-06-01。
+> 来源：本地 `interview-experiences/tinykv-tikv-6.824-mianshi.md`、`interview-experiences/tinykv-lab-question-map.md`，更新口径是 2026-06-01。
 
 <figure class="tinykv-svg-figure">
   <a href="/images/posts/tinykv-labs/tinykv-interview-map.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-interview-map.svg" alt="TinyKV 面经问题按 Lab 反查"></a>
@@ -122,6 +124,41 @@ tags:
 - 设计并发 HashMap 或持久化 HashMap。
 - mmap 持久化后进程崩溃，如何保证恢复正确性。
 
+## 高频问题按 Lab 反查
+
+面试时不要把所有题都往 Raft 上贴。先判断问题属于哪一层，再讲这一层的请求路径、关键文件、异常场景和取舍。
+
+| 面试问题 | 主要对应 Lab | 回答锚点 |
+| --- | --- | --- |
+| TinyKV 整体架构是什么 | 全部 | 从 `Storage` -> Raft -> Region/Scheduler -> MVCC 串起来，不要只讲 Raft |
+| TinyKV 和 TiKV 差在哪里 | 全部，偏工程化 | TinyKV 保留存储层主链路，但缺生产 TiKV 的完整 PD、监控、性能优化和复杂调度 |
+| RawGet / RawPut / RawScan 怎么实现 | Lab1 | `raw_api.go`、`StandaloneStorage.Reader/Write`、Badger、CF 前缀封装 |
+| BadgerDB / LSM / B+Tree 怎么理解 | Lab1 外延 | TinyKV 调用 Badger，不是手写 LSM；回答重点放在读写放大、compaction、范围查询 |
+| Raft 选主、日志复制、Figure 8 | Lab2A | `raft.go`、`log.go`、term/vote/log、prevLogIndex/prevLogTerm、当前 term commit 规则 |
+| RawNode / Ready / Advance 是什么 | Lab2A/2B | Raft 不直接做 IO；Ready 把 entries、messages、committed entries 交给 raftstore |
+| KV 请求如何接入 Raft | Lab2B | 请求变成 `RaftCmdRequest`，leader propose，commit 后 apply 到 Badger，再 callback |
+| 为什么读请求也走 Raft | Lab2B | baseline 用 Raft 保证线性一致；ReadIndex、LeaseRead 是后续优化 |
+| Log GC / Snapshot 怎么做 | Lab2C | CompactLog 也走 Raft；落后副本缺日志时用 snapshot 追状态机 |
+| Multi-Raft 为什么必要 | Lab3 | 单 Raft group 串行全部 key；Region 按 range 切分后，不同 Raft group 可以并行 |
+| Store / Peer / Region 区别 | Lab3 | Store 是机器/进程，Region 是 key range，Peer 是某个 Region 的一份副本 |
+| Region split 如何保证一致 | Lab3B | split 作为 admin command 进入 Raft，commit 后更新 RegionEpoch、range、storeMeta |
+| Scheduler 做什么 | Lab3C | 收集 heartbeat，维护全局 Region/Store 状态，生成 add/remove peer、transfer leader 等 operator |
+| MVCC 是什么 | Lab4A | `default/write/lock` 三个 CF：value、提交记录、未提交锁 |
+| Prewrite / Commit 怎么走 | Lab4B | prewrite 检查冲突并写 lock/default；commit 写 write 并删 lock |
+| 遗留锁怎么处理 | Lab4C | `CheckTxnStatus` 判断 primary 状态，`ResolveLock` 推动 secondary commit 或 rollback |
+| primary commit 后 secondary 没提交怎么办 | Lab4C | primary 已提交后 secondary 不能回滚，后续请求应 resolve 为 commit |
+| ReadIndex / LeaseRead / PreVote / FollowerRead | Lab2/3 拓展 | 先说明 TinyKV baseline，再讲生产读优化依赖的多数派确认、租约或 follower 一致性条件 |
+| 分布式唯一 ID、并发 HashMap、LRU | 非 TinyKV 主线 | 不要硬贴 TinyKV；可以类比 timestamp oracle、缓存或 KV 场景设计，单独回答 |
+
+如果要背文件，可以按这个顺序压缩：
+
+| Lab | 重点文件 |
+| --- | --- |
+| Lab1 | `kv/server/raw_api.go`、`kv/storage/standalone_storage/standalone_storage.go`、`kv/util/engine_util/*` |
+| Lab2 | `raft/raft.go`、`raft/log.go`、`raft/rawnode.go`、`kv/raftstore/peer_storage.go`、`kv/raftstore/peer_msg_handler.go` |
+| Lab3 | `kv/raftstore/peer.go`、`kv/raftstore/router.go`、`kv/raftstore/runner/split_checker.go`、`scheduler/server/cluster.go` |
+| Lab4 | `kv/transaction/mvcc/transaction.go`、`lock.go`、`write.go`、`kv/server/server.go` |
+
 ## 刷题顺序建议
 
 1. 先刷 2025 百度两篇、腾讯 TEG、TikTok 直播后端。
@@ -138,4 +175,3 @@ tags:
 3. 异常场景：宕机、网络分区、并发冲突、恢复流程。
 4. 工程取舍：吞吐、延迟、一致性、可用性、复杂度之间的选择。
 5. 自己做过什么：实现、调试、测试、压测、优化或复盘。
-
