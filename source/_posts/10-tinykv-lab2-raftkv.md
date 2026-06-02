@@ -13,7 +13,7 @@ tags:
 ---
 
 > 来源：本地 TinyKV 项目文件：`tinykv-understanding/labs/lab2-raftkv.md`。
-> 顺序：[项目总览](/2026/06/02/tinykv-project-overview/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [面经索引](/2026/06/02/tinykv-interview-experience-index/)。
+> 顺序：[MIT 6.5840 和 TinyKV](/2026/06/01/mit65840-tinykv-distributed-storage/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [面经索引](/2026/06/02/tinykv-interview-experience-index/)。
 
 <figure class="tinykv-svg-figure">
   <a href="/images/posts/tinykv-labs/tinykv-lab2-raftkv-flow.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab2-raftkv-flow.svg" alt="TinyKV Lab2 RaftKV 写入流程"></a>
