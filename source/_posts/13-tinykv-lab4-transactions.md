@@ -858,7 +858,7 @@ kv/transaction/commands4b_test.go
 kv/transaction/commands4c_test.go
 ```
 
-更完整的测试命令在 [测试指南](./testing-guide.md)。
+更完整的测试命令在 测试指南。
 
 ## 面试怎么说
 

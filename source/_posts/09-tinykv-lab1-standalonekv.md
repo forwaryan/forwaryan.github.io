@@ -299,7 +299,7 @@ kv/server/server_test.go
 | `RawScan` | 能按 key 顺序扫描 |
 | 读视图 | 扫描过程中不会被后续删除搞乱 |
 
-更完整的测试命令在 [测试指南](./testing-guide.md)。
+更完整的测试命令在 测试指南。
 
 ## 面试怎么说
 

@@ -524,7 +524,7 @@ raft/rawnode_test.go
 kv/test_raftstore/test_test.go
 ```
 
-更完整的测试命令在 [测试指南](./testing-guide.md)。
+更完整的测试命令在 测试指南。
 
 ## 面试怎么说
 

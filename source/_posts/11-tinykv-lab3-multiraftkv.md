@@ -618,7 +618,7 @@ Lab3B 最容易出问题的是“split 之后状态没有同时收敛”。也�
 | 被删 Peer 继续 apply | `RemoveNode` 删除自己后，这个 Peer 已经 stopped，但同一个 Ready 里后续日志不能再继续 apply |
 | 越界请求没有稳定返回 `KeyNotInRegion` | 普通 KV 请求不能只等 apply 阶段检查 key range，进入 Raft 前也要检查 |
 
-这几个问题的详细排查过程和修复思路记录在 [Lab3B Bug 排查：split 后状态收敛问题](./lab3b-split-heartbeat-difficulty.md)。
+这几个问题的详细排查过程和修复思路记录在 [Lab3B Bug 排查：split 后状态收敛问题](/2026/07/06/tinykv-lab3b-region-split-state-convergence/)。
 
 ## C 部分：调度器
 
@@ -850,7 +850,7 @@ scripts/test_lab3b.sh
 RUNS=10 SKIP_3A=1 scripts/test_lab3b.sh split
 ```
 
-更完整的测试命令在 [测试指南](./testing-guide.md)。
+更完整的测试命令在 测试指南。
 
 ## 面试怎么说
 
