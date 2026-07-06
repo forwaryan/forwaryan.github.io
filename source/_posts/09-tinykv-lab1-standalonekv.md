@@ -2,7 +2,7 @@
 title: "TinyKV Lab1：StandaloneKV"
 date: "2026-07-06 10:05:00"
 updated: "2026-07-06 10:05:00"
-permalink: "2026/06/02/tinykv-lab1-standalonekv/"
+permalink: "2026/07/06/tinykv-lab1-standalonekv/"
 categories:
   - "分布式系统"
 tags:
@@ -12,8 +12,7 @@ tags:
   - "BadgerDB"
 ---
 
-> 来源：本地 TinyKV 项目文件：`tinykv-understanding/labs/lab1-standalonekv.md`。
-> 顺序：[MIT 6.5840 和 TinyKV](/2026/06/01/mit65840-tinykv-distributed-storage/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [面经索引](/2026/06/02/tinykv-interview-experience-index/)。
+> 顺序：[MIT 6.5840 和 TinyKV](/2026/07/06/mit65840-tinykv-distributed-storage/) / [Lab1](/2026/07/06/tinykv-lab1-standalonekv/) / [Lab2](/2026/07/06/tinykv-lab2-raftkv/) / [Lab3](/2026/07/06/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/07/06/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/07/06/tinykv-lab4-transactions/) / [面经索引](/2026/07/06/tinykv-interview-experience-index/)。
 
 <figure class="tinykv-svg-figure">
   <a href="/images/posts/tinykv-labs/tinykv-lab1-storage-path.png" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab1-storage-path.png" alt="TinyKV Lab1 请求路径"></a>
