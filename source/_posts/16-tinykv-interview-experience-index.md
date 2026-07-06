@@ -17,7 +17,7 @@ tags:
 > 来源：本地 `interview-experiences/tinykv-tikv-6.824-mianshi.md`、`interview-experiences/tinykv-lab-question-map.md`，更新口径是 2026-06-01。
 
 <figure class="tinykv-svg-figure">
-  <a href="/images/posts/tinykv-labs/tinykv-interview-map.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-interview-map.svg" alt="TinyKV 面经问题按 Lab 反查"></a>
+  <a href="/images/posts/tinykv-labs/tinykv-interview-map.png" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-interview-map.png" alt="TinyKV 面经问题按 Lab 反查"></a>
   <figcaption>面经不要只按公司看，更要按系统层次拆：存储、复制、分片、事务、工程外延。</figcaption>
 </figure>
 

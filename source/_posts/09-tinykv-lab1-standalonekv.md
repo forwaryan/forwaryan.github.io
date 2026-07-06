@@ -16,7 +16,7 @@ tags:
 > 顺序：[MIT 6.5840 和 TinyKV](/2026/06/01/mit65840-tinykv-distributed-storage/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [面经索引](/2026/06/02/tinykv-interview-experience-index/)。
 
 <figure class="tinykv-svg-figure">
-  <a href="/images/posts/tinykv-labs/tinykv-lab1-storage-path.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab1-storage-path.svg" alt="TinyKV Lab1 请求路径"></a>
+  <a href="/images/posts/tinykv-labs/tinykv-lab1-storage-path.png" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab1-storage-path.png" alt="TinyKV Lab1 请求路径"></a>
   <figcaption>Lab1 把 Raw KV 请求直接映射到底层 BadgerDB。</figcaption>
 </figure>
 

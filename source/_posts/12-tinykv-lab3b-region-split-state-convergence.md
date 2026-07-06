@@ -17,7 +17,7 @@ tags:
 > 顺序：[MIT 6.5840 和 TinyKV](/2026/06/01/mit65840-tinykv-distributed-storage/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [面经索引](/2026/06/02/tinykv-interview-experience-index/)。
 
 <figure class="tinykv-svg-figure">
-  <a href="/images/posts/tinykv-labs/tinykv-lab3b-split-state.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab3b-split-state.svg" alt="TinyKV Lab3B split 状态收敛"></a>
+  <a href="/images/posts/tinykv-labs/tinykv-lab3b-split-state.png" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab3b-split-state.png" alt="TinyKV Lab3B split 状态收敛"></a>
   <figcaption>Region split 需要先经 Raft commit，再更新本地元信息。</figcaption>
 </figure>
 

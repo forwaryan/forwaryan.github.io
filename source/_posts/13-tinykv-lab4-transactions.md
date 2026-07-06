@@ -17,7 +17,7 @@ tags:
 > 顺序：[MIT 6.5840 和 TinyKV](/2026/06/01/mit65840-tinykv-distributed-storage/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [面经索引](/2026/06/02/tinykv-interview-experience-index/)。
 
 <figure class="tinykv-svg-figure">
-  <a href="/images/posts/tinykv-labs/tinykv-lab4-mvcc-percolator.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab4-mvcc-percolator.svg" alt="TinyKV Lab4 MVCC 与 Percolator"></a>
+  <a href="/images/posts/tinykv-labs/tinykv-lab4-mvcc-percolator.png" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab4-mvcc-percolator.png" alt="TinyKV Lab4 MVCC 与 Percolator"></a>
   <figcaption>事务层用 default/write/lock 三个 CF 管理版本、锁和提交记录。</figcaption>
 </figure>
 

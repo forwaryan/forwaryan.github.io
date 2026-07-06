@@ -17,7 +17,7 @@ tags:
 > 顺序：[MIT 6.5840 和 TinyKV](/2026/06/01/mit65840-tinykv-distributed-storage/) / [Lab1](/2026/06/02/tinykv-lab1-standalonekv/) / [Lab2](/2026/06/02/tinykv-lab2-raftkv/) / [Lab3](/2026/06/02/tinykv-lab3-multiraftkv/) / [Lab3B](/2026/06/02/tinykv-lab3b-region-split-state-convergence/) / [Lab4](/2026/06/02/tinykv-lab4-transactions/) / [面经索引](/2026/06/02/tinykv-interview-experience-index/)。
 
 <figure class="tinykv-svg-figure">
-  <a href="/images/posts/tinykv-labs/tinykv-lab3-region-peer-store.svg" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab3-region-peer-store.svg" alt="TinyKV Lab3 Store Peer Region 关系"></a>
+  <a href="/images/posts/tinykv-labs/tinykv-lab3-region-peer-store.png" target="_blank" rel="noopener"><img src="/images/posts/tinykv-labs/tinykv-lab3-region-peer-store.png" alt="TinyKV Lab3 Store Peer Region 关系"></a>
   <figcaption>Store、Peer、Region 和 Scheduler 的关系。</figcaption>
 </figure>
 
