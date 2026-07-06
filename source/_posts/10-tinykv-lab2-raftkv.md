@@ -336,6 +336,11 @@ commit index 怎么安全推进
 
 ### 2AC：`rawnode.go` 每个函数负责什么
 
+<figure>
+  <img src="/images/posts/tinykv-labs/tinykv-lab2-ready-advance.png" alt="Ready/Advance 循环">
+  <figcaption>TinyKV 的 Raft 驱动模型：Tick 推进时钟 → Step 处理消息 → Ready 输出待办 → Advance 确认完成，形成循环。</figcaption>
+</figure>
+
 `rawnode.go` 是 Raft 模块暴露给上层的接口层。它不负责真正写磁盘、发网络、执行 KV；它负责把底层 `Raft` 的内部变化整理成 `Ready`，让上层按顺序处理。
 
 | 名称 | 作用 |
@@ -445,6 +450,11 @@ Lab2B 主要改的是 raftstore 外壳，不是 Raft 算法本身：
 这部分的核心检查点是：客户端的 `Get/Put/Delete/Snap` 不能绕过 Raft，必须被包装成 Raft log，commit 后才 apply 到 Badger。
 
 ## C 部分：快照和日志压缩
+
+<figure>
+  <img src="/images/posts/tinykv-labs/tinykv-lab2-snapshot-recovery.png" alt="快照恢复流程">
+  <figcaption>当 Follower 落后太远时，Leader 发送快照让它直接恢复到最新状态，跳过中间所有日志。</figcaption>
+</figure>
 
 Raft 日志不能一直增长。否则系统跑久了，日志会越来越大。
 

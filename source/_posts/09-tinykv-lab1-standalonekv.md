@@ -198,6 +198,11 @@ sequenceDiagram
 
 ## CF 是什么
 
+<figure>
+  <img src="/images/posts/tinykv-labs/tinykv-lab1-cf-encoding.png" alt="Column Family 编码原理">
+  <figcaption>三个逻辑 CF（default/write/lock）通过 key 前缀编码映射到 BadgerDB 的单一 key 空间。</figcaption>
+</figure>
+
 官方文档里会说列族，也就是 `CF`。这个名字有点吓人，其实可以先理解成：
 
 ```text

@@ -65,6 +65,11 @@ right region: [splitKey, end)
 
 ## 问题一：split 后 scheduler 出现 range gap
 
+<figure>
+  <img src="/images/posts/tinykv-labs/tinykv-lab3b-bug1-range-gap.png" alt="Split 后 Scheduler Range Gap 时序">
+  <figcaption>Bug1 时序：Split 后只有 Left Region 立即上报心跳，Right Region 的心跳要等选举完成，导致 Scheduler 出现范围空洞。</figcaption>
+</figure>
+
 ### 先点明原因
 
 这个问题出现的原因是：split apply 完成后，我们只同步向 scheduler 上报了 left region，而 right region 要等 new peer 后续启动、选主、定时 heartbeat 之后才会被 scheduler 看到。
@@ -222,6 +227,11 @@ split apply 时连续看到 left 和 right
 
 ## 问题二：被移除的 peer 继续 apply 后续日志
 
+<figure>
+  <img src="/images/posts/tinykv-labs/tinykv-lab3b-bug2-apply-loop.png" alt="Apply 循环中 RemoveNode 导致 Panic">
+  <figcaption>Bug2：HandleRaftReady 循环中，RemoveNode 销毁了 peer 但循环未中断，后续 entry 继续 apply 导致重启 panic。</figcaption>
+</figure>
+
 ### 先点明原因
 
 这个问题出现的原因是：`HandleRaftReady` 会一次性处理当前 `Ready` 里的多个 committed entries。如果其中某条 conf change 日志把当前 peer 自己 remove 掉，peer 已经被 destroy 并设置为 stopped，但原来的循环还可能继续 apply 同一个 `Ready` 中后面的 entries。
@@ -332,6 +342,11 @@ for _, entry := range rd.CommittedEntries {
 因此停止处理后续 entries 是正确的。它避免了 destroy 后继续写 `applyState`，也就避免了重启时出现 `raftState.LastIndex < applyState.AppliedIndex`。
 
 ## 问题三：越界 KV 请求没有稳定返回 KeyNotInRegion
+
+<figure>
+  <img src="/images/posts/tinykv-labs/tinykv-lab3b-bug3-key-range.png" alt="Key 范围检查双重防线">
+  <figcaption>Bug3 修复：Propose 时快速拒绝明显越界请求 + Apply 时兜底处理并发 Split 导致的范围变化。</figcaption>
+</figure>
 
 ### 先点明原因
 
