@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab2：RaftKV"
-date: "2026-06-02 10:04:00"
-updated: "2026-06-02 11:30:00"
+date: "2026-07-06 10:10:00"
+updated: "2026-07-06 10:10:00"
 permalink: "2026/06/02/tinykv-lab2-raftkv/"
 categories:
   - "分布式系统"

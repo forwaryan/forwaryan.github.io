@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab4：Transactions"
-date: "2026-06-02 10:01:00"
-updated: "2026-06-02 11:30:00"
+date: "2026-07-06 10:25:00"
+updated: "2026-07-06 10:25:00"
 permalink: "2026/06/02/tinykv-lab4-transactions/"
 categories:
   - "分布式系统"

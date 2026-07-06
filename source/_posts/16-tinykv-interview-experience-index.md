@@ -1,6 +1,6 @@
 ---
 title: "TinyKV / TiKV / MIT 6.824 面经索引"
-date: "2026-06-02 09:58:00"
+date: "2026-07-06 10:30:00"
 updated: "2026-06-02 12:30:00"
 permalink: "2026/06/02/tinykv-interview-experience-index/"
 categories:

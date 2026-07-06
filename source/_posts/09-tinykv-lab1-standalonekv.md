@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab1：StandaloneKV"
-date: "2026-06-02 10:05:00"
-updated: "2026-06-02 11:30:00"
+date: "2026-07-06 10:05:00"
+updated: "2026-07-06 10:05:00"
 permalink: "2026/06/02/tinykv-lab1-standalonekv/"
 categories:
   - "分布式系统"

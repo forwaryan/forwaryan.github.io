@@ -1,7 +1,7 @@
 ---
 title: "TinyKV Lab3：Multi-RaftKV"
-date: "2026-06-02 10:03:00"
-updated: "2026-06-02 11:30:00"
+date: "2026-07-06 10:15:00"
+updated: "2026-07-06 10:15:00"
 permalink: "2026/06/02/tinykv-lab3-multiraftkv/"
 categories:
   - "分布式系统"
